@@ -1,7 +1,5 @@
 package edu.upc;
 
-import edu.upc.Controlador.EtakemonManagerImpl;
-import edu.upc.Entity.User;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -38,18 +36,7 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        EtakemonManagerImpl etakemonManagerImpl = EtakemonManagerImpl.getInstance();
 
-        //User e = new User(0,"ttt"," toi");
-       etakemonManagerImpl.AddUser(0,"eas","ada");
-        etakemonManagerImpl.AddUser(1,"Marc","marc");
-
-        // Etackemon e= new Etackemon();
-     //   User u= new User(5,"oTRO","NOMBRE");
-       // u.update(2);
-      /*  List<User> objects = u.findAll();
-        System.out.println("\nID= "+objects);
-*/
 
 
         final HttpServer server = startServer();

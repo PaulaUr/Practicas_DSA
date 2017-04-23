@@ -10,28 +10,28 @@ public class User {
     private int id;
     private String nombre;
     private String contraseña;
-    public List<Etackemon> listEtackemon = new ArrayList<Etackemon>();
+    public List<ObjectUser> listObjectByUser = new ArrayList<ObjectUser>() ;
 
     public User() {
     }
+
+    public User(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public List<ObjectUser> getListObject() {
+        return listObjectByUser;
+    }
+
+    public void setListObjectByUser(List<ObjectUser> listObjectByUser) {
+        this.listObjectByUser = listObjectByUser;
+    }
+
+
     public User(String nombre, String contraseña) {
         this.nombre = nombre;
         this.contraseña = contraseña;
-    }
-    public User(int id, String nombre, String contraseña) {
-        this.id = id;
-        this.nombre = nombre;
-        this.contraseña = contraseña;
-    }
-
-
-
-    public List<Etackemon> getListEtackemon() {
-        return listEtackemon;
-    }
-
-    public void setListEtackemon(List<Etackemon> listEtackemon) {
-        this.listEtackemon = listEtackemon;
+        this.listObjectByUser = new ArrayList<ObjectUser>();
     }
 
     public int getId() {
@@ -58,7 +58,10 @@ public class User {
         this.contraseña = contraseña;
     }
 
-    public void AddEtackemon( Etackemon etackemon){
-        listEtackemon.add(etackemon);
-    }
+
+
+    // public void AddEtackemon( ObjectUser objectUser){
+   //     listObjectByUser.add(objectUser);
+    //}
+
 }

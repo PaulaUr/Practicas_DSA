@@ -3,19 +3,18 @@ package edu.upc.Entity;
 /**
  * Created by pauli on 19/04/2017.
  */
-public class Etackemon {
+public class ObjectUser {
 
     private String nombre;
     private String tipo;
-    private int id;
 
-    public Etackemon() {
+    public ObjectUser() {
     }
 
-    public Etackemon(int id, String nombre, String tipo) {
+    public ObjectUser(String nombre, String tipo) {
         this.nombre = nombre;
         this.tipo = tipo;
-        this.id = id;
+
     }
 
     public String getNombre() {
@@ -34,11 +33,5 @@ public class Etackemon {
         this.tipo = tipo;
     }
 
-    public String getId() {
-        return String.valueOf(id);
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }

@@ -1,13 +1,10 @@
 package edu.upc.Controlador;
 
-import edu.upc.Entity.Etackemon;
+import edu.upc.Entity.ObjectUser;
 import edu.upc.Entity.User;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by pauli on 19/04/2017.
@@ -19,8 +16,9 @@ public class EtakemonManagerImpl implements EtakemonManager {
 
     private static EtakemonManagerImpl instance = null;
     //variable q almacena una referencia al objeto
+
     private HashMap<String, User> cache;
-    private List<Etackemon> etackemonList;
+    private List<ObjectUser> cacheEtak = new ArrayList<ObjectUser>();
 
     private int counter;
 
@@ -39,45 +37,24 @@ public class EtakemonManagerImpl implements EtakemonManager {
 
 
 
-    public void AddUser(int id,String nombre, String contraseña) {
-        User user = new User();
-        user.setId(id);
-        user.setNombre(nombre);
-        user.setContraseña(contraseña);
+    public void AddUser(User user) {
+
         cache.put(user.getNombre(),user);
         counter++;
-       // Logger.info("Añadido usuario: " + nombre + " y contraseña: " + contraseña);
-
     }
     public int getCounter(){
         return counter;
     }
 
-    public void ModifyUser(User userModify, String nombre, String contraseña) {
-       /* for (Map.Entry<String,User> entry : cache.entrySet()){
+    public void ModifyUser(User userModify) {
+
+       for (Map.Entry<String,User> entry : cache.entrySet()){
             User valor = entry.getValue();
 
-            if(valor.getNombre().equals(nombre)){
-                userModify.setNombre(nombre);
-                userModify.setContraseña(contraseña);
+            if(valor.getNombre().equals(userModify.getNombre())){
                 cache.put(userModify.getNombre(),userModify);
-                User user = cache.get(entry.getKey());
-                user.getNombre();
             }
-        }*/
-       userModify.setNombre(nombre);
-        userModify.setContraseña(contraseña);
-        cache.put(userModify.getNombre(),userModify);
-        //Logger.info("El Usuario modificado: Name= "+userModify.getNombre()+ " Contraseña= " +userModify.getContraseña());
-
-    }
-
-    public User selectUser(String nombre) {
-        User selectUser = cache.get(nombre);
-
-        //Logger.info("selectUser: "+selectUser.getNombre());
-
-        return selectUser;
+        }
     }
 
     public User InfoUser(String nombre) {
@@ -87,61 +64,63 @@ public class EtakemonManagerImpl implements EtakemonManager {
                 user = entry.getValue();
             }
         }
-        //Logger.info("Info Usuario: ID= "+user.getId()+ " Name= "+user.getNombre());
-
         return user;
     }
 
-    public List<User> listUser() {
+    public List<User> listUserOrdenados() {
         List<User> listUser = new ArrayList<User>(cache.values());
+        List<String> listUser2 = new ArrayList<String>();
 
+        for(int i=0;i<listUser.size();i++){
+            listUser2.add(listUser.get(i).getNombre());
+        }
+        Collections.sort(listUser2);
+        listUser.clear();
+        for(int j=0; j<listUser2.size();j++){
+            listUser.add(cache.get(listUser2.get(j)));
+        }
         return listUser;
     }
-
-    /*public void AddEtackemon(String nombre, Etackemon etackemon) {
+    public void AddEtackemon(User user, ObjectUser objectUser) {
+        List<ObjectUser> list = new ArrayList<ObjectUser>();
         for (Map.Entry<String,User> entry : cache.entrySet()) {
-        if (nombre == cache.getNombre()) {
-                User us = cache.get(entry.getKey());
-                us.AddEtackemon(etackemon);
-                cache.put(entry.getKey(),us);
+            User valor = entry.getValue();
+            if (valor.getNombre().equals(user.getNombre())) {
+                valor.listObjectByUser.add(objectUser);
+                 list.add(objectUser);
+                //cacheEtak = new ArrayList<ObjectUser>(list);
             }
-            Logger.info("Etackemon Añadido:  "+etackemon.getNombreEtackemon()+ "\n del User= "+nombre);
-
         }
-    }*/
-
-    public void AddEtackemon(User user, Etackemon etackemon) {
-        user.listEtackemon.add(etackemon);
+        for (int i=0;i<list.size();i++) {
+            cacheEtak.add(list.get(i));
+        }
     }
+    public List<ObjectUser> AllObject() {
 
+        return cacheEtak;
+    }
     public boolean DeleteEtackemon(String nombre) {
         boolean buscar = false;
-        for (int i=0; i<etackemonList.size();i++){
-            if(etackemonList.get(i).getNombre().equals(nombre)){
+        for (int i = 0; i< cacheEtak.size(); i++){
+            if(cacheEtak.get(i).getNombre().equals(nombre)){
                 buscar = true;
-                etackemonList.remove(nombre);
+                cacheEtak.remove(nombre);
             }
-         //   Logger.info("Etackemon Eliminado:  "+etackemonList.get(i).getNombre());
+            //   Logger.info("ObjectUser Eliminado:  "+cacheEtak.get(i).getNombre());
         }
         return buscar;
     }
 
- /*   public List<Etackemon> InfoEtackemon(String name) {
-        List<Etackemon> datos = new ArrayList<Etackemon>();
-
-        for (int i = 0; i < etackemonList.size(); i++) {
-            Etackemon eetakemon = etackemonList.get(i);
-
-            if (eetakemon.getNombreEtackemon().equals(name)) {
-                datos.add(eetakemon);
+    @Override
+    public List<ObjectUser> ListObjectByUser(String nombre) {
+        List<ObjectUser> list2 = new ArrayList<ObjectUser>();
+       // ObjectUser o = new ObjectUser();
+        for (Map.Entry<String,User> entry : cache.entrySet()) {
+            User valor = entry.getValue();
+            if (valor.getNombre().equals(nombre)) {
+                list2 = new ArrayList<ObjectUser>(valor.getListObject());
             }
         }
-        return datos;
-    }*/
-
-    public List<Etackemon> InfoEtackemon(User user) {
-        List<Etackemon> etackemons = user.getListEtackemon();
-
-        return etackemons;
+        return list2;
     }
 }

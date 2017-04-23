@@ -1,6 +1,6 @@
 package edu.upc.Controlador;
 
-import edu.upc.Entity.Etackemon;
+import edu.upc.Entity.ObjectUser;
 import edu.upc.Entity.User;
 
 
@@ -12,18 +12,20 @@ import java.util.List;
 public interface EtakemonManager {
 
 
-    public void AddUser(int id, String nombre, String contraseña);
-    public void ModifyUser(User user, String nombre, String contraseña);
+//    public void AddUser(int id, String nombre, String contraseña);
+    public void AddUser(User user);
+    public void ModifyUser(User user);
+
+    //public void ModifyUser(User user, String nombre, String contraseña);
 
     public User InfoUser(String nombre);
-    public User selectUser(String nombre);
-    public List<User> listUser();
+    public List<User> listUserOrdenados();
 
-    //public void AddEtackemon(String nombre, Etackemon etackemon);
-    public void AddEtackemon(User user, Etackemon etackemon);
+    //public void AddEtackemon(String nombre, ObjectUser objectUser);
+    public void AddEtackemon(User user, ObjectUser objectUser);
 
 
     public boolean DeleteEtackemon(String nombre);
-    //public List<Etackemon> InfoEtackemon(String nombre);
-    public List<Etackemon> InfoEtackemon(User user);
+    public List<ObjectUser> AllObject();
+    public  List<ObjectUser> ListObjectByUser(String nombre);
 }

@@ -1,11 +1,12 @@
 package edu.upc;
 
 import edu.upc.Controlador.EtakemonManagerImpl;
+import edu.upc.Entity.ObjectUser;
 import edu.upc.Entity.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.lang.reflect.InvocationTargetException;
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,63 +25,64 @@ public class RestUser {
     @Path("/addUser")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String addUser(User u) {
+    public Response addUser(User u) {
 
-        //User user = new User();
-
-        etakemonManagerImpl.AddUser(u.getId(),u.getNombre(),u.getContraseña());
-
-        hasmap.put(u.getNombre(),u);
-            counter++;
-            String mensaje= "Usuario añadido";
-        return "{\"mensaje\": \""+mensaje+"\" }";
-
-        //Response.status(201).entity("Eetakemon added: ").build();
+        try {
+            etakemonManagerImpl.AddUser(u);
+            return Response.status(201).entity("User added successfully: " + u.getNombre()).build();
+        }catch (Exception e){
+                return Response.status(409).entity("User already exists!").build();
+        }
     }
 
     public int getCounter() {
         return counter;
     }
 
+    //Muestra todos los usuarios
     @Path("/all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> listUser() throws Exception {
         //User user = new User();
-        List<User> list = etakemonManagerImpl.listUser() ;
+        List<User> list = etakemonManagerImpl.listUserOrdenados() ;
         return list;
     }
 
-
-
-    @Path("/modify/{name}/{contraseña}")
+    @Path("/modify")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String ModifyUser(@PathParam("name") String name, @PathParam("contraseña") String contraseña){
-        User user = new User();
-        etakemonManagerImpl.ModifyUser(user,name,contraseña);
-
-        hasmap.put(user.getNombre(),user);
-        String mensaje= "Usuario modificado "+user.getNombre();
-        /*for(Map.Entry<String, User> entry: hasmap.entrySet() )
-        {
-            User value = entry.getValue();
-            String mensaje= "Usuario modificado "+value.getNombre();
-
-        }*/
-        return "{\"mensaje\": \""+mensaje+"\" }";
+    public Response ModifyUser(User user) {//@PathParam("name") String name){
+        //User user = new User(0,name,null);
+        try {
+            etakemonManagerImpl.ModifyUser(user);
+            return Response.status(201).entity("User added successfully: " + user.getNombre()).build();
+        } catch (Exception e) {
+            return Response.status(409).entity("User already exists!").build();
+        }
     }
+
 
     @Path("/infoUser/{name}")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     public String InfoUser(@PathParam("name") String name){
 
-        //User user = new User();
+        User user = new User();
         etakemonManagerImpl.InfoUser(name);
 
-        String mensaje= "Usuario=  "+name+ "";
-        return "{\"mensaje\": \""+mensaje+"\" }";
+        String mensaje= "Usuario=  "+name+ " ID="+user.getId() ;//+user.getListObjectByUser();
+
+        return "{\""+mensaje+"\" }";
+    }
+    //Muestra Objetos de un solo Usuario
+    @GET
+    @Path("/infObjectByUser/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ObjectUser> Objects (@PathParam("name") String name) throws Exception {
+          User user = new User(name);
+        List<ObjectUser> list = etakemonManagerImpl.ListObjectByUser(name);
+        return list;
     }
 
 

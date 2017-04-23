@@ -1,0 +1,113 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Minimo1",
+		"_postman_id": "5badebc5-a6fd-e41f-3536-afd06484b8a0",
+		"description": "DSA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/examen/User/addUser",
+			"request": {
+				"url": "http://localhost:8080/examen/User/addUser",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"0\",\n\t\"nombre\":\"User0\",\n\t\"contraseña\": \"user\"\n}"
+				},
+				"description": "Add new User"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/examen/Etak/add/User0",
+			"request": {
+				"url": "http://localhost:8080/examen/Etak/add/User0",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nombre\":\"Etak1\",\n\t\"tipo\": \"tierra\"\n}"
+				},
+				"description": "Add new Object"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/examen/Etak/all",
+			"request": {
+				"url": "http://localhost:8080/examen/Etak/all",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nombre\":\"Etak1\",\n\t\"tipo\": \"tierra\"\n}"
+				},
+				"description": "show list of Object"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/examen/User/all",
+			"request": {
+				"url": "http://localhost:8080/examen/User/all",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Users"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/examen/User/modify",
+			"request": {
+				"url": "http://localhost:8080/examen/User/modify",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"2\",\n\t\"nombre\":\"Alba\",\n\t\"contraseña\": \"newContraseña\"\n}"
+				},
+				"description": "Modify User"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/examen/User/infObjectByUser/Alba",
+			"request": {
+				"url": "http://localhost:8080/examen/User/infObjectByUser/Alba",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Objects of one User"
+			},
+			"response": []
+		}
+	]
+}

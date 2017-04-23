@@ -12,6 +12,8 @@ public class User extends DDBB{
     private int id;
     private String nombre;
     private String contraseña;
+    public List<ObjectUser> listObjectByUser = new ArrayList<ObjectUser>() ;
+
 
 
     public User() {
@@ -26,9 +28,16 @@ public class User extends DDBB{
         this.id = id;
         this.nombre = nombre;
         this.contraseña = contraseña;
+        this.listObjectByUser = new ArrayList<ObjectUser>();
     }
 
+    public List<ObjectUser> getListObject() {
+        return listObjectByUser;
+    }
 
+    public void setListObjectByUser(List<ObjectUser> listObjectByUser) {
+        this.listObjectByUser = listObjectByUser;
+    }
 
     public String getId() {
         return String.valueOf(id);

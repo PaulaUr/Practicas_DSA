@@ -5,19 +5,17 @@ import edu.upc.DDBB;
 /**
  * Created by pauli on 19/04/2017.
  */
-public class Etackemon extends DDBB{
+public class ObjectUser extends DDBB{
 
     private String nombre;
     private String tipo;
-    private int id;
 
-    public Etackemon() {
+    public ObjectUser() {
     }
 
-    public Etackemon(int id, String nombre, String tipo) {
+    public ObjectUser(String nombre, String tipo) {
         this.nombre = nombre;
         this.tipo = tipo;
-        this.id = id;
     }
 
     public String getNombre() {
@@ -36,11 +34,5 @@ public class Etackemon extends DDBB{
         this.tipo = tipo;
     }
 
-    public String getId() {
-        return String.valueOf(id);
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }

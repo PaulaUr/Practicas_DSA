@@ -10,7 +10,7 @@ public class EtackemonByUser {
 
     private int id;
     private String nombre;
-    protected List<Etackemon> listEtackemon = new ArrayList<Etackemon>();
+    protected List<ObjectUser> listObjectUser = new ArrayList<ObjectUser>();
 
     public int getId() {
         return id;
@@ -28,15 +28,15 @@ public class EtackemonByUser {
         this.nombre = nombre;
     }
 
-    public List<Etackemon> getListEtackemon() {
-        return listEtackemon;
+    public List<ObjectUser> getListObjectUser() {
+        return listObjectUser;
     }
 
-    public void setListEtackemon(List<Etackemon> listEtackemon) {
-        this.listEtackemon = listEtackemon;
+    public void setListObjectUser(List<ObjectUser> listObjectUser) {
+        this.listObjectUser = listObjectUser;
     }
-    public void AddEtackemon( Etackemon etackemon){
-        listEtackemon.add(etackemon);
+    public void AddEtackemon( ObjectUser objectUser){
+        listObjectUser.add(objectUser);
     }
 
 }

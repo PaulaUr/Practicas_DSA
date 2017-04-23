@@ -1,6 +1,6 @@
 package edu.upc;
 
-import edu.upc.Entity.Etackemon;
+import edu.upc.Entity.ObjectUser;
 import edu.upc.Entity.User;
 
 import javax.ws.rs.*;
@@ -50,24 +50,42 @@ public class RestUser {
         return counter;
     }
 
+    @Path("/infoUser/{id}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String InfoUser(@PathParam("id") Integer id){
+
+        User user = new User();
+        user.getId();
+        String mensaje= "Usuario=  "+user.getNombre()+ " ID="+user.getId() ;//+user.getListObjectByUser();
+
+        return "{\""+mensaje+"\" }";
+    }
+
+
     @Path("/all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> listUser() throws Exception {
-        User user = new User();
+
+        User user= new User();
         List<User> list = user.findAll();
+
         return list;
     }
-
-    @Path("/modify")
+//Nofunciona
+    @Path("/modify/{id}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String ModifyUser(User user){
-    user.update(Integer.parseInt(user.getId()));
+    public Response ModifyUser(User user,@PathParam("id") Integer id){
+        try {
+            user.update(id);
+            return Response.status(201).entity("User added successfully: " + user.getNombre()).build();
+        } catch (Exception e) {
+            return Response.status(409).entity("User already exists!").build();
+        }
+  //  user.update(Integer.parseInt(user.getId()));
 
-        //hasmap.put(counter,user);
-        String mensaje= "Usuario modificado "+user.getNombre();
-        return "{\"mensaje\": \""+mensaje+"\" }";
     }
 
 

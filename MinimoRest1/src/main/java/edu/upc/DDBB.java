@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by pauli on 15/03/2017.
  */
-public abstract class DDBB {
+public abstract class DDBB<E> {
 
     //conexion con base de datos
     public Connection getConnection() {
@@ -18,7 +18,7 @@ public abstract class DDBB {
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/examen", "root", "25098866");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/examen", "root", "25068899");
             System.out.println("Conexión exitoso");
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -186,24 +186,21 @@ public abstract class DDBB {
         }
     }
 
-    public List findAll() {
+    public List<Object> findAll() {
 
-        List<ArrayList<Object>> out = new ArrayList<ArrayList<Object>>();
+        List<Object> out = new ArrayList<Object>();
         Connection con = getConnection();
         query.append("SELECT *FROM ").append(this.getClass().getSimpleName());
 
-        ArrayList<Object> lista;
+        ArrayList<Object> lista = new ArrayList<Object>();
         //int counter = 1;
-
         try {
             Statement stm = con.createStatement(); //creando Statement(sin paramatetros)
             ResultSet rs = stm.executeQuery(query.toString());//ejecutando query en un ResultSet(consigue info sobre tipo y propiedades)
             ResultSetMetaData rsmd = rs.getMetaData();//da info sobre nºcolumnas,nombre y tipo a traves de getMetadata del objeto ResultSet
+            //lista = new ArrayList<Object>();
 
             while (rs.next()) {
-                Object cosas = new Object();
-                lista = new ArrayList<Object>();
-
                 for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
 
                     if (rsmd.getColumnTypeName(i).equals("INT")) {
@@ -214,19 +211,23 @@ public abstract class DDBB {
                         lista.add(rs.getString(i));
                         //System.out.println(rsmd.getColumnName(i)+ "= " +rs.getString(i));
                     }
-                    //if (i == rsmd.getColumnCount()) {
-                      //  rs.next();
-                        //i = 0;
-                    //}
+                    if (i == rsmd.getColumnCount()){
+                        rs.next();
+                        i = 0;
+                    }
                 }
-                out.add(lista);
+           //     for(int i=0;i<lista.size();i++){
+             //       out.add(lista.get(i));
+               // }
+              //  out.add(lista);
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return out;
+        return lista;
     }
 
     protected List<Object> selectByName(String name) {
@@ -235,26 +236,28 @@ public abstract class DDBB {
         Connection con = getConnection();
         query.append("SELECT *FROM ").append(this.getClass().getSimpleName()).append(" WHERE nombre= " + name);
 
-        ArrayList<Object> lista;
+      //  ArrayList<Object> lista;
         //int counter = 1;
 
         try {
             Statement stm = con.createStatement(); //creando Statement(sin paramatetros)
             ResultSet rs = stm.executeQuery(query.toString());//ejecutando query en un ResultSet(consigue info sobre tipo y propiedades)
             ResultSetMetaData rsmd = rs.getMetaData();//da info sobre nºcolumnas,nombre y tipo a traves de getMetadata del objeto ResultSet
+        //    lista = new ArrayList<Object>();
 
             while (rs.next()) {
-                Object cosas = new Object();
-                lista = new ArrayList<Object>();
+               // Object cosas = new Object();
 
                 for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
 
                     if (rsmd.getColumnTypeName(i).equals("INT")) {
-                        lista.add(rs.getInt(i));
+          //              lista.add(rs.getInt(i));
+                        out.add(rs.getInt(i));
                         //System.out.println(rsmd.getColumnLabel(i)+"= " +rs.getInt(i));
                     }
                     if (rsmd.getColumnTypeName(i).equals("VARCHAR")) {
-                        lista.add(rs.getString(i));
+                        //lista.add(rs.getString(i));
+                        out.add(rs.getInt(i));
                         //System.out.println(rsmd.getColumnName(i)+ "= " +rs.getString(i));
                     }
                     //if (i == rsmd.getColumnCount()) {
@@ -262,8 +265,8 @@ public abstract class DDBB {
                     //i = 0;
                     //}
                 }
-                out.add(lista);
             }
+            //out.add(lista);
 
         } catch (SQLException e) {
             e.printStackTrace();

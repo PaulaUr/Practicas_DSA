@@ -1,16 +1,12 @@
 package edu.upc;
 
-import edu.upc.Entity.Etackemon;
-import edu.upc.Entity.User;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.util.List;
 
 /**
  * Main class.
@@ -42,7 +38,7 @@ public class Main {
     public static void main(String[] args) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
       //  User e = new User(0,"ttt"," toi");
       // e.insert();
-     // Etackemon e= new Etackemon();
+     // ObjectUser e= new ObjectUser();
      //   User u= new User(5,"oTRO","NOMBRE");
        // u.update(2);
       /*  List<User> objects = u.findAll();

@@ -110,6 +110,7 @@ public class EtakemonManagerImpl implements EtakemonManager {
     }*/
 
     public void AddEtackemon(User user, Etackemon etackemon) {
+
         user.listEtackemon.add(etackemon);
     }
 

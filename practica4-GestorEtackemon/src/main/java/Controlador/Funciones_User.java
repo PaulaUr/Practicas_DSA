@@ -57,6 +57,7 @@ public class Funciones_User {
     }
 
     public Map<String, User> FindUser(String nick) {
+
         Map<String, User> datos = new HashMap<String,User>();
         for (Map.Entry<String,User> e: hasmap.entrySet()){
             User valor = e.getValue();

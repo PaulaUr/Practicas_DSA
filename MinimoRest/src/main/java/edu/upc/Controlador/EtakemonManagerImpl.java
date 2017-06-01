@@ -13,14 +13,13 @@ public class EtakemonManagerImpl implements EtakemonManager {
 
    // final static org.apache.log4j.Logger  Logger = org.apache.log4j.Logger.getLogger(EtakemonManagerImpl.class);
 
-
     private static EtakemonManagerImpl instance = null;
-    //variable q almacena una referencia al objeto
 
+    //variable q almacena una referencia al objeto
     private HashMap<String, User> cache;
     private List<ObjectUser> cacheEtak = new ArrayList<ObjectUser>();
-
     private int counter;
+
 
     private EtakemonManagerImpl(){
         //Constructor privado para solo poder instanciarlo desde aqui

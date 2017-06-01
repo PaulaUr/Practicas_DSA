@@ -20,10 +20,12 @@ public class User {
     }
 
     public List<ObjectUser> getListObject() {
+
         return listObjectByUser;
     }
 
     public void setListObjectByUser(List<ObjectUser> listObjectByUser) {
+
         this.listObjectByUser = listObjectByUser;
     }
 

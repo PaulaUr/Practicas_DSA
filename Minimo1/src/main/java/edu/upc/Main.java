@@ -24,7 +24,7 @@ public class Main
         User Vidal = etakemonManagerImpl.selectUser("Vidal");
         etakemonManagerImpl.InfoUser("Vidal");
 
-   //     etakemonManagerImpl.ModifyUser(Vidal,"nombreNew", "passNew");
+       etakemonManagerImpl.ModifyUser(Vidal,"nombreNew", "passNew");
 
 
         /*List<User> list = etakemonManagerImpl.listUser();
@@ -32,7 +32,7 @@ public class Main
             System.out.println("Id: "+l.getId()+ "\nName: "+l.getNombre());
         }*/
 
-        Etackemon etackemon = new Etackemon();
+   /*     Etackemon etackemon = new Etackemon();
         etackemon.setId(1);
         etackemon.setNombreEtackemon("Dog");
         etackemon.setTipo("Agua");
@@ -53,6 +53,6 @@ public class Main
         for (Etackemon l:list1 ) {
             Etackemon e2 = new Etackemon();
             System.out.println("\nEl User "+Vidal.getNombre() +" con Eetackemon de ID= "+l.getId()+" NOMBRE= "+l.getNombreEtackemon()+ " TIPO= "+l.getTipo());
-        }
+        }*/
     }
 }

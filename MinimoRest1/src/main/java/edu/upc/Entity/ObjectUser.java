@@ -7,13 +7,24 @@ import edu.upc.DDBB;
  */
 public class ObjectUser extends DDBB{
 
+    private Integer id;
+
     private String nombre;
     private String tipo;
 
     public ObjectUser() {
     }
 
-    public ObjectUser(String nombre, String tipo) {
+    public ObjectUser(Integer id) {
+        this.id = id;
+    }
+
+    public ObjectUser(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public ObjectUser(Integer id, String nombre, String tipo) {
+        this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
     }
@@ -32,6 +43,14 @@ public class ObjectUser extends DDBB{
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 

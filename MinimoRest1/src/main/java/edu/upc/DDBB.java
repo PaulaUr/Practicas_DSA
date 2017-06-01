@@ -1,5 +1,8 @@
 package edu.upc;
 
+import edu.upc.Entity.ObjectUser;
+import edu.upc.Entity.User;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,7 +13,7 @@ import java.util.List;
 /**
  * Created by pauli on 15/03/2017.
  */
-public abstract class DDBB<E> {
+public abstract class DDBB<E>{
 
     //conexion con base de datos
     public Connection getConnection() {
@@ -18,7 +21,7 @@ public abstract class DDBB<E> {
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/examen", "root", "25068899");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/examen", "root", "25098866");
             System.out.println("Conexión exitoso");
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -142,7 +145,7 @@ public abstract class DDBB<E> {
     public void select(int id) {
 
         Connection con = getConnection();
-        query.append("SELECT *FROM ").append(this.getClass().getSimpleName()).append(" WHERE id= " + id);
+        query.append("SELECT *FROM ").append(this.getClass().getSimpleName()).append(" WHERE id= "+id);
 
         try {
             Statement stm = con.createStatement(); //creando Statement(sin paramatetros)
@@ -186,48 +189,97 @@ public abstract class DDBB<E> {
         }
     }
 
-    public List<Object> findAll() {
-
+    public List<Object> findAll() throws InvocationTargetException, IllegalAccessException, InstantiationException {
         List<Object> out = new ArrayList<Object>();
+
         Connection con = getConnection();
         query.append("SELECT *FROM ").append(this.getClass().getSimpleName());
-
-        ArrayList<Object> lista = new ArrayList<Object>();
         //int counter = 1;
         try {
-            Statement stm = con.createStatement(); //creando Statement(sin paramatetros)
-            ResultSet rs = stm.executeQuery(query.toString());//ejecutando query en un ResultSet(consigue info sobre tipo y propiedades)
+           // Statement stm = con.createStatement(); //creando Statement(sin paramatetros)
+            PreparedStatement pstm = con.prepareStatement(query.toString());
+            addClassFieldParams(pstm);
+            pstm.execute();
+            ResultSet rs = pstm.executeQuery();//ejecutando query en un ResultSet(consigue info sobre tipo y propiedades)
             ResultSetMetaData rsmd = rs.getMetaData();//da info sobre nºcolumnas,nombre y tipo a traves de getMetadata del objeto ResultSet
-            //lista = new ArrayList<Object>();
 
-            while (rs.next()) {
-                for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
+              while (rs.next()) {
+                  Integer id=0;
+                  String nombre=null;
+                  String tipo=null;
 
+                for (int i = 1; i < rsmd.getColumnCount(); i++) {
                     if (rsmd.getColumnTypeName(i).equals("INT")) {
-                        lista.add(rs.getInt(i));
                         //System.out.println(rsmd.getColumnLabel(i)+"= " +rs.getInt(i));
                     }
                     if (rsmd.getColumnTypeName(i).equals("VARCHAR")) {
-                        lista.add(rs.getString(i));
+                         nombre= rs.getString(i);
+                        tipo=rs.getString(i+1);
+                       // out.add(rs.getString(i));
                         //System.out.println(rsmd.getColumnName(i)+ "= " +rs.getString(i));
                     }
-                    if (i == rsmd.getColumnCount()){
+                    /*if (i == rsmd.getColumnCount()){
                         rs.next();
                         i = 0;
-                    }
+                    }*/
+                    ObjectUser o = new ObjectUser(id,nombre,tipo);
+                    out.add(o);
                 }
-           //     for(int i=0;i<lista.size();i++){
-             //       out.add(lista.get(i));
-               // }
+              }
               //  out.add(lista);
-            }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return lista;
+        return out;
+    }
+
+    public List<User> Allusername() throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        List<User> out = new ArrayList<User>();
+        Connection con = getConnection();
+        query.append("SELECT *FROM ").append(this.getClass().getSimpleName());
+        //int counter = 1;
+        try {
+
+            // Statement stm = con.createStatement(); //creando Statement(sin paramatetros)
+            PreparedStatement pstm = con.prepareStatement(query.toString());
+            addClassFieldParams(pstm);
+            pstm.execute();
+            ResultSet rs = pstm.executeQuery();//ejecutando query en un ResultSet(consigue info sobre tipo y propiedades)
+            ResultSetMetaData rsmd = rs.getMetaData();//da info sobre nºcolumnas,nombre y tipo a traves de getMetadata del objeto ResultSet
+
+            while (rs.next()) {
+                int id=0;
+                String nombre=null;
+                String contraseña=null;
+
+                for (int i = 1; i < rsmd.getColumnCount(); i++) {
+                    if (rsmd.getColumnTypeName(i).equals("INT")) {
+                        id= rs.getInt(i);
+                        //lista.add(rs.getInt(i));
+                        //System.out.println(rsmd.getColumnLabel(i)+"= " +rs.getInt(i));
+                    }
+                    if (rsmd.getColumnTypeName(i).equals("VARCHAR")) {
+                        //lista.add(rs.getString(i));
+                        nombre = rs.getString(i);
+                        contraseña = rs.getString(i);
+                        //System.out.println(rsmd.getColumnName(i)+ "= " +rs.getString(i));
+                    }
+                  //  if (i == rsmd.getColumnCount()){
+                    //    rs.next();
+                      //  i = 0;
+                    }
+                    User u = new User(id,nombre,contraseña);
+
+                    out.add(u);
+                //}
+            }
+     //         out.add((User) lista);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return out;
     }
 
     protected List<Object> selectByName(String name) {
@@ -274,9 +326,75 @@ public abstract class DDBB<E> {
 
         return out;
     }
+    public String selectPassSOLOPARALOGIN(String pk) {
+        Connection con = getConnection(); //OBTENGO CONEXION DE LA BASE DE DATOS
 
+        //CONSTRUYO CONSULTA
+        StringBuffer consulta = new StringBuffer();
+        consulta.append("SELECT contraseña FROM User").append(" WHERE nombre = '" + pk+"'");
+        System.out.println(consulta);
+        Statement stmt = null;
+        String resultado= null;
+        try {
+            //EJECUTO CONSULTA
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta.toString()); //Y RECOJO LOS DATOS EN rs
+            ResultSetMetaData rsmd = rs.getMetaData();
+            rs.next();
+            for (int i = 1; i < rsmd.getColumnCount() + 1; i++) { //lo ejecuto el numero de veces de columnas que tenga en la tabla
+                try {
+                    rsmd.getColumnName(1);
+                    System.out.println(rsmd.getColumnLabel(i) + " = " + rs.getString(i));
+                    resultado=rs.getString(i);
+                    rs.next();
 
+                } catch (Exception e) {
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+    //Seleccionar los objetos que tiene un usuario
+    public List<String> selectObjectsUser(String pk) {
+        Connection con = getConnection(); //OBTENGO CONEXION DE LA BASE DE DATOS
+        List<String> milista= new ArrayList<String>();
 
+        //CONSTRUYO CONSULTA
+        StringBuffer consulta = new StringBuffer();
+        consulta.append("SELECT tipo FROM objectUser").append(" WHERE nombre= '" + pk+"'");
+        System.out.println(consulta);
+        Statement stmt = null;
+        String nameEtakemon="0";
+        try {
+            //EJECUTO CONSULTA
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta.toString()); //Y RECOJO LOS DATOS EN rs
+            ResultSetMetaData rsmd = rs.getMetaData();
+            rs.next();
+            for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
+                try {
+                    if (rsmd.getColumnTypeName(i).equals("INT")) {//para la columna i,si es del tipo int
+                        System.out.println(rsmd.getColumnLabel(i) + " = " + rs.getInt(i)); //obtengo la etiqueta de la columna y el entero (id=1...)
+                    }
+                    if (rsmd.getColumnTypeName(i).equals("VARCHAR")) { //si es del tipovarchar, obtengo lo que es tambien
+                        System.out.println(rsmd.getColumnLabel(i) + " = " + rs.getString(i));
+                        milista.add(rs.getString(i));
+                    }
+                    if (i == rsmd.getColumnCount()) { //cuando i=numero de columnas, voy al siguiente y salgo del bucle,reiniciando i
+                        rs.next();
+                        i = 0;
+                    }
+                } catch (Exception e) {
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return milista;
+    }
 
 }
 //xq StringBuffer es inmutable
